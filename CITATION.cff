@@ -1,0 +1,27 @@
+
+cff-version: 1.2.0
+title: Stochastic Facility Location & Network Design
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Mohammad S.
+    family-names: Hajibabaie
+    email: hajibabaie.mohammad@gmail.com
+repository-code: "https://github.com/hajibabaie/stochastic-facility-location"
+abstract: >-
+  A reproducible implementation of a two-stage stochastic
+  capacitated facility location problem with a service-level
+  chance constraint, solved by sample average approximation
+  and a Benders / L-shaped decomposition with Pareto-optimal
+  cuts. Supports HiGHS, SCIP, and Gurobi backends.
+keywords:
+  - operations research
+  - facility location
+  - stochastic programming
+  - Benders decomposition
+  - sample average approximation
+  - chance constraints
+license: MIT
+version: 0.1.0

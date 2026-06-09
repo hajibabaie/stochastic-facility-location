@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: lint + type + test (open solvers)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Sync (locked, open solvers + dev)
+        run: uv sync --locked --extra dev --python ${{ matrix.python-version }}
+
+      # --no-sync reuses the environment built by the explicit sync above. Without
+      # it, `uv run` re-syncs to the .python-version interpreter without the dev
+      # extra, dropping ruff/mypy/pytest on the non-default Python matrix entries.
+      - name: Ruff lint
+        run: uv run --no-sync ruff check .
+
+      - name: Ruff format check
+        run: uv run --no-sync ruff format --check .
+
+      - name: Mypy
+        run: uv run --no-sync mypy src
+
+      - name: Pytest (skip slow)
+        run: uv run --no-sync pytest -m "not slow and not gurobi" --cov=sflp --cov-report=term-missing
+
+  gurobi:
+    name: gurobi fast path (optional, may fail)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Sync with gurobi extra
+        run: uv sync --locked --extra dev --extra gurobi
+
+      - name: Pytest (gurobi-marked only)
+        env:
+          GRB_LICENSE_FILE: ${{ secrets.GRB_LICENSE_FILE }}
+        run: uv run --no-sync pytest -m gurobi

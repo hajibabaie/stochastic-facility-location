@@ -1,0 +1,21 @@
+# Pure-MIT path: the classic iterative Benders loop on HiGHS (no SCIP/Gurobi).
+seed: 20231015
+data:
+  source: geonames
+  country: DE
+  n_facilities: 12
+scenarios:
+  n_scenarios: 8
+  n_sample: 400
+  sigma: 0.2
+  reduction: kmeans
+model:
+  chance_constraint: false
+  epsilon: 0.10
+  gamma: 0.05
+solver:
+  backend: classic
+  mip_solver: highs
+  lp_solver: highs
+  pareto_cuts: false
+  gap_tolerance: 1.0e-6

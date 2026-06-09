@@ -1,0 +1,20 @@
+# Tiny, fast run for smoke-testing the full pipeline (open solvers, seconds).
+seed: 20231015
+data:
+  source: geonames
+  country: DE
+  n_facilities: 12
+scenarios:
+  n_scenarios: 8
+  n_sample: 300
+  sigma: 0.2
+  reduction: kmeans
+model:
+  chance_constraint: false
+  epsilon: 0.10
+  gamma: 0.05
+solver:
+  backend: branch_and_cut
+  mip_solver: scip
+  lp_solver: highs
+  pareto_cuts: false

@@ -1,0 +1,21 @@
+# Demand-volatility sweep (sigma = 0.10). Compare VSS/EVPI across sigma values.
+seed: 20231015
+data:
+  source: geonames
+  country: DE
+  n_facilities: 12
+scenarios:
+  n_scenarios: 12
+  n_sample: 800
+  sigma: 0.10
+  reduction: kmeans
+model:
+  chance_constraint: false
+  epsilon: 0.10
+  gamma: 0.05
+solver:
+  backend: branch_and_cut
+  mip_solver: scip
+  lp_solver: highs
+  pareto_cuts: false
+  time_limit: 600

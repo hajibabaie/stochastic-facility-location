@@ -1,0 +1,41 @@
+# Default SFLP run: a moderate, fully open-solver-reproducible instance.
+# Real city geography (GeoNames), seeded scenarios, SCIP single-tree Benders
+# (the fast open backend; the HiGHS classic loop is in classic_highs.yaml).
+seed: 20231015
+
+data:
+  source: geonames
+  country: DE          # Germany; thousands of cities >=5000 pop available
+  n_facilities: 12     # top-12 cities by population
+  capacity_rule_k: 3.0
+  fixed_cost_base: 1.0
+  fixed_cost_pop_scale: 0.5
+  unmet_penalty_scale: 3.0
+
+scenarios:
+  n_scenarios: 12
+  n_sample: 800
+  sigma: 0.2
+  correlation_length: null   # null => i.i.d. lognormal demand
+  reduction: kmeans
+
+model:
+  chance_constraint: false   # base two-stage problem; see scip_single_tree.yaml for the chance constraint
+  epsilon: 0.10
+  gamma: 0.05
+  budget: null
+  cardinality: null
+
+solver:
+  backend: branch_and_cut   # SCIP single-tree branch-and-Benders-cut (open)
+  mip_solver: scip
+  lp_solver: highs
+  pareto_cuts: false        # Pareto cuts help degenerate instances, not this one
+  max_iterations: 500
+  gap_tolerance: 1.0e-6
+  time_limit: 600
+
+saa:
+  replications: 20
+  reference_sample: 5000
+  confidence: 0.95

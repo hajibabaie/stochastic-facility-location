@@ -1,0 +1,6 @@
+# Normalize line endings to LF in the repo so ruff format and CI behave the
+# same on Windows and Linux. Binary-ish artifacts are left untouched.
+* text=auto eol=lf
+*.png binary
+*.zip binary
+uv.lock text eol=lf

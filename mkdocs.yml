@@ -1,0 +1,32 @@
+site_name: Stochastic Facility Location & Network Design
+site_description: Two-stage stochastic CFLP with SAA, chance constraints, and Benders decomposition.
+repo_url: https://github.com/hajibabaie/stochastic-facility-location
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.sections
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Algorithm & model: algorithm.md
+  - Reproducing results: reproducing-results.md

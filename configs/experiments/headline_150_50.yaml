@@ -1,0 +1,34 @@
+# Large-instance template: 150 nodes, 50 scenarios, chance-constrained, Gurobi.
+# This is a configuration template, not a quick reproducible result: the plain
+# Python cut routine solves one LP per scenario per candidate, so an instance of
+# this size takes substantial time. A time limit bounds the run; the result is
+# the best solution found within it. Reduce n_facilities/n_scenarios for a fast
+# run, or use the dozen-facility configs for the verified reproducible set.
+seed: 20231015
+data:
+  source: geonames
+  country: US          # 7500+ cities >= 5000 population available
+  n_facilities: 150
+  capacity_rule_k: 3.0
+  fixed_cost_base: 1.0
+  fixed_cost_pop_scale: 0.5
+  unmet_penalty_scale: 3.0
+scenarios:
+  n_scenarios: 50
+  n_sample: 2000
+  sigma: 0.2
+  correlation_length: 500.0   # km; nearby cities' demand moves together
+  reduction: kmeans
+model:
+  chance_constraint: true
+  epsilon: 0.10
+  gamma: 0.05
+  budget: null
+  cardinality: null
+solver:
+  backend: gurobi
+  mip_solver: gurobi
+  lp_solver: highs
+  pareto_cuts: true
+  gap_tolerance: 1.0e-6
+  time_limit: 3600
